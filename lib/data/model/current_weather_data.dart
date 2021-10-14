@@ -45,9 +45,8 @@ class CurrentWeatherData {
     return CurrentWeatherData(
       coord: Coord.fromJson(json['coord']),
       weather: (json['weather'] as List)
-              ?.map((w) => Weather.fromJson(w))
-              ?.toList() ??
-          List.empty(),
+              .map((w) => Weather.fromJson(w))
+              .toList(),
       base: json['base'],
       main: MainWeather.fromJson(json['main']),
       visibility: json['visibility'],
