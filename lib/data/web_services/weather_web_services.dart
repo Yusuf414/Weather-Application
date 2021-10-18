@@ -1,13 +1,15 @@
 import 'package:weather_app/data/model/current_weather_data.dart';
+import 'package:weather_app/data/model/five_days_data.dart';
+import 'package:weather_app/data/model/location.dart';
 import 'package:weather_app/data/repository/weather_repository.dart';
 
 class WeatherWebServices {
-  final String city;
+  String? city = 'london';
 
-  String baseUrl = 'http://api.openweathermap.org/data/2.5';
+  String baseUrl = 'https://api.openweathermap.org/data/2.5';
   String apiKey = 'appid=5d57a4f248641b52b0cc09e606db8162';
   WeatherWebServices({
-    required this.city,
+     this.city,
   });
   void getCurrentweather({
     Function()? beforeSend,
@@ -15,32 +17,65 @@ class WeatherWebServices {
     Function(dynamic error)? onError,
   }) {
     final url = '$baseUrl/weather?q=$city&lang=en&$apiKey';
-    ApiRepository(url: '$url').getData(
-      beforeSend: ()=> {
-        if (beforeSend !=null){
-          beforeSend(),
-        }
-      },
-      onSuccess: (data)=> {
-        onSuccess!(CurrentWeatherData.fromJson(data)),
-      },
-      onError: (error)=> {
-        if (onError != null) {
-          print(error),
-          onError(error),
-        }
-      }
-    );
+    ApiRepository(url: url, payload: null).getData(
+        beforeSend: () => {
+              if (beforeSend != null)
+                {
+                  beforeSend(),
+                }
+            },
+        onSuccess: (data) => {
+              onSuccess!(CurrentWeatherData.fromJson(data)),
+            },
+        onError: (error) => {
+              if (onError != null)
+                {
+                  onError(error),
+                }
+            });
   }
 
-  void getTopFiveCities({
+  void getCurrentLocationWeather({
     Function()? beforeSend,
-    Function(dynamic currentWeatherData)? onSuccess,
+    Function(Location currentWeatherData)? onSuccess,
     Function(dynamic error)? onError,
-  }) {}
-  void getFiveDaysThreeHoursForecastData({
-    Function()? beforeSend,
-    Function(dynamic currentWeatherData)? onSuccess,
+    double? lat,
+    double? lon,
+  }) {
+    final url = '$baseUrl/onecall?lat=$lat&lon=$lon&$apiKey';
+    ApiRepository(url: url, payload: null).getData(
+        beforeSend: () => {
+              if (beforeSend != null)
+                {
+                  beforeSend(),
+                }
+            },
+        onSuccess: (data) => {
+              onSuccess!(Location.fromJson(data)),
+            },
+        onError: (error) => {
+              if (onError != null)
+                {
+                  onError(error),
+                }
+            });
+  }
+
+  void getFiveDaysThreeHoursForcastData({
+    Function()? beforSend,
+    Function(List<FiveDayData> fiveDayData)? onSuccess,
     Function(dynamic error)? onError,
-  }) {}
+  }) {
+    final url = '$baseUrl/forecast?q=$city&lang=en&$apiKey';
+    ApiRepository(url: url, payload: null).getData(
+        beforeSend: () => {},
+        onSuccess: (data) => {
+              onSuccess!((data['list'] as List)
+                  .map((t) => FiveDayData.fromJson(t))
+                  .toList()),
+            },
+        onError: (error) => {
+              onError!(error),
+            });
+  }
 }

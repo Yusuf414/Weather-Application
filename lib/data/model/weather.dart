@@ -1,8 +1,8 @@
 class Weather {
-  final int? id;
-  final String? main;
-  final String? description;
-  final String? icon;
+  int? id = 0;
+  String? main = '';
+  String? description = '';
+  String? icon = '';
   Weather({
     this.id,
     this.main,

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:weather_app/data/model/current_weather_data.dart';
+import 'package:weather_app/data/model/five_days_data.dart';
 import 'package:weather_app/logic/home_logic/home_controller.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +19,7 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/cloud-in-blue-sky.jpg'),
+                    image: AssetImage('assets/images/blue-sky.jpg'),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.only(
@@ -29,51 +30,28 @@ class HomeScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     Container(
-                      child: AppBar(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                        leading: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.menu,
-                              color: Colors.white,
-                            )),
-                      ),
-                    ),
-                    Container(
-                      padding:
-                          const EdgeInsets.only(top: 100, left: 20, right: 20),
+                      width: 300,
+                      padding: const EdgeInsets.only(top: 30, left: 40),
                       child: TextField(
-                        onChanged: (value) {},
+                        onChanged: (value) => controller.city = value,
                         style: const TextStyle(
-                          color: Colors.white,
-                        ),
+                            color: Colors.black54, fontWeight: FontWeight.bold),
                         textInputAction: TextInputAction.search,
-                        onSubmitted: (value) {},
-                        decoration: InputDecoration(
-                          suffix: const Icon(
-                            Icons.search,
-                            color: Colors.white,
-                          ),
-                          hintStyle: const TextStyle(color: Colors.white),
+                        onSubmitted: (value) {
+                          controller.city = value;
+                          controller.updateWeather();
+                        },
+                        decoration: const InputDecoration(
+                          hintStyle: TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'flutterfonts.ttf'),
                           hintText: 'SEARCH',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.white)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.white)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Colors.white)),
                         ),
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0.0, 1.0),
+                      alignment: Alignment(0.0, 0.9),
                       child: SizedBox(
                         height: 10,
                         width: 10,
@@ -101,7 +79,7 @@ class HomeScreen extends StatelessWidget {
                                     children: [
                                       Container(
                                         padding: const EdgeInsets.only(
-                                          top: 15,
+                                          top: 10,
                                           left: 20,
                                           right: 20,
                                         ),
@@ -109,31 +87,172 @@ class HomeScreen extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () async {
+                                                      var position =
+                                                          await controller
+                                                              .determinePosition();
+                                                      await controller
+                                                          .GetAddressFromLatLon(
+                                                              position);
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons.location_on,
+                                                      color: Colors.black45,
+                                                    )),
+                                                Text(
+                                                  (controller.currentWeatherData !=
+                                                          null)
+                                                      ? '${controller.city}'
+                                                          .toUpperCase()
+                                                      : 'loading',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption!
+                                                      .copyWith(
+                                                          color: Colors.black45,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18,
+                                                          fontFamily:
+                                                              'flutterfonts'),
+                                                ),
+                                              ],
+                                            ),
                                             Center(
                                               child: Text(
-                                                '${controller.currentWeatherData.name}'.toUpperCase(),
+                                                DateFormat()
+                                                    .add_MMMMEEEEd()
+                                                    .format(DateTime.now()),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .caption!
                                                     .copyWith(
-                                                        color: Colors.black45,
-                                                        fontSize: 28,
-                                                        fontFamily:
-                                                            'flutterfonts'),
-                                              ),
-                                            ),
-                                            Center(
-                                              child: Text(
-                                                DateFormat().add_MMMMEEEEd().format(DateTime.now()),
-                                                style: Theme.of(context).textTheme.caption.copyWith(
-                                                  color: Colors.black45,
-                                                  fontSize: 16,
-                                                  fontFamily: 'flutterfonts',
-                                                ),
+                                                      color: Colors.black45,
+                                                      fontSize: 12,
+                                                      fontFamily:
+                                                          'flutterfonts',
+                                                    ),
                                               ),
                                             ),
                                           ],
                                         ),
+                                      ),
+                                      const Divider(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            padding:
+                                                const EdgeInsets.only(left: 15),
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  (controller.currentWeatherData
+                                                              .weather !=
+                                                          null)
+                                                      ? '${controller.currentWeatherData.weather![0].description}'
+                                                      : '',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption!
+                                                      .copyWith(
+                                                          color: Colors.black45,
+                                                          fontSize: 16,
+                                                          fontFamily:
+                                                              'flutterfonts'),
+                                                ),
+                                                Text(
+                                                  (controller.currentWeatherData
+                                                              .main !=
+                                                          null)
+                                                      ? '${(controller.currentWeatherData.main!.temp! - 273.15).round().toString()}\u2103'
+                                                      : '',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline2!
+                                                      .copyWith(
+                                                          color: Colors.black45,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 24,
+                                                          fontFamily:
+                                                              'flutterfonts'),
+                                                ),
+                                                Text(
+                                                  (controller.currentWeatherData
+                                                              .main !=
+                                                          null)
+                                                      ? 'min: ${(controller.currentWeatherData.main!.tempMin! - 273.15).round().toString()}\u2103 / max: ${(controller.currentWeatherData.main!.tempMax! - 273.15).round().toString()}\u2103'
+                                                      : '',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .caption!
+                                                      .copyWith(
+                                                          color: Colors.black45,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 12,
+                                                          fontFamily:
+                                                              'flutterfonts'),
+                                                ),
+                                                // SizedBox(height: 20),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.only(
+                                                right: 20),
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: 120,
+                                                    height: 80,
+                                                    decoration:
+                                                         BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image:
+                                                          (controller.currentWeatherData.weather != null) 
+                                                         ? controller.selectImageForWeather(controller.currentWeatherData.weather![0].id!)
+                                                          : AssetImage(
+                                                      'assets/images/normal.png'),
+                                                          fit: BoxFit.contain
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                      (controller.currentWeatherData
+                                                                  .wind !=
+                                                              null)
+                                                          ? 'wind ${controller.currentWeatherData.wind!.speed!} m/s'
+                                                          : '',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .caption!
+                                                          .copyWith(
+                                                              color: Colors
+                                                                  .black45,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 12,
+                                                              fontFamily:
+                                                                  'flutterfonts'),
+                                                    ),
+                                                  ),
+                                                ]),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -149,8 +268,182 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 2,
-              child: Container(),
+              flex: 3,
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 100),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Text(
+                                "other cities".toUpperCase(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption!
+                                    .copyWith(
+                                        color: Colors.black45,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        fontFamily: 'flutterfonts'),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              height: 170,
+                              child: ListView.separated(
+                                physics: BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: controller.dataList.length,
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        VerticalDivider(
+                                  color: Colors.transparent,
+                                  width: 5,
+                                ),
+                                itemBuilder: (BuildContext context, int index) {
+                                  CurrentWeatherData? data;
+                                  (controller.dataList.length > 0)
+                                      ? data = controller.dataList[index]
+                                      : data = null;
+                                  return Container(
+                                    width: 140,
+                                    height: 150,
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      child: Container(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              (data != null)
+                                                  ? "${data.name}"
+                                                  : '',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .caption!
+                                                  .copyWith(
+                                                      color: Colors.black45,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18,
+                                                      fontFamily:
+                                                          'flutterfonts'),
+                                            ),
+                                            Text(
+                                              (data != null)
+                                                  ? "${(data.main!.temp! - 273.15).round().toString()}\u2103"
+                                                  : '',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .caption!
+                                                  .copyWith(
+                                                      color: Colors.black45,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18,
+                                                      fontFamily:
+                                                          'flutterfonts'),
+                                            ),
+                                            Container(
+                                              width: 50,
+                                              height: 50,
+                                              decoration:  BoxDecoration(
+                                                image: DecorationImage(
+                                                  image:  (data != null) 
+                                                         ? controller.selectImageForWeather(controller.currentWeatherData.weather![0].id!)
+                                                          : AssetImage('assets/images/normal.png'),
+                                                  fit: BoxFit.contain,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              (data != null)
+                                                  ? "${data.weather![0].description}"
+                                                  : '',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .caption!
+                                                  .copyWith(
+                                                      color: Colors.black45,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 12,
+                                                      fontFamily:
+                                                          'flutterfonts'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(top: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'forcast next 5 days'.toUpperCase(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .caption!
+                                        .copyWith(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black45,
+                                        ),
+                                  ),
+                                  Icon(
+                                    Icons.next_plan_outlined,
+                                    color: Colors.black45,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 240,
+                              child: Card(
+                                elevation: 5,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: SfCartesianChart(
+                                  primaryXAxis: CategoryAxis(),
+                                  series: <ChartSeries<FiveDayData, String>>[
+                                    SplineSeries<FiveDayData, String>(
+                                      dataSource: controller.fiveDaysData,
+                                      xValueMapper: (FiveDayData f, _) =>
+                                          f.dateTime,
+                                      yValueMapper: (FiveDayData f, _) =>
+                                          f.temp,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

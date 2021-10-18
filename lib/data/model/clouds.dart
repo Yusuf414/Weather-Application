@@ -1,7 +1,5 @@
-
-   
 class Clouds {
-  final int? all;
+  int? all = 0;
 
   Clouds({this.all});
 

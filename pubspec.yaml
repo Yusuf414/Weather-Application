@@ -32,9 +32,10 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.3.8
-  intl: 
-  syncfusion_flutter_charts: 
-
+  intl: ^0.17.0
+  syncfusion_flutter_charts: ^19.3.45+1
+  geolocator: ^7.7.0
+  geocoding: ^2.0.1
 dev_dependencies:
   
   # The "flutter_lints" package below contains a set of recommended lints to

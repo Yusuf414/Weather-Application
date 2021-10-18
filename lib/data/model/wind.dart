@@ -1,6 +1,6 @@
 class Wind {
-  final double? speed;
-  final int? deg;
+  double? speed = 0;
+  int? deg = 0;
   Wind({
     this.speed,
     this.deg,

@@ -1,6 +1,6 @@
 class FiveDayData {
-  final String? dateTime;
-  final int? temp;
+  String? dateTime = '';
+  int? temp = 0;
 
   FiveDayData({this.dateTime, this.temp});
 

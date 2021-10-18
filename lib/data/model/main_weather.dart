@@ -1,10 +1,10 @@
 class MainWeather {
-  final double? temp;
-  final double? feelsLike;
-  final double? tempMin;
-  final double? tempMax;
-  final int? pressure;
-  final int? humidity;
+  double? temp = 0;
+  double? feelsLike = 0;
+  double? tempMin = 0;
+  double? tempMax = 0;
+  int? pressure = 0;
+  int? humidity = 0;
 
   MainWeather(
       {this.temp,

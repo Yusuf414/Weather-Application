@@ -5,7 +5,7 @@ class ApiRepository {
   final Map<String, dynamic>? payload;
   ApiRepository({
     required this.url,
-     this.payload,
+    this.payload,
   });
   Dio _dio = Dio();
   void getData({
