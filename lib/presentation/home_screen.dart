@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/blue-sky.jpg'),
+                    image: AssetImage('assets/images/try.jpg'),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.only(
@@ -29,25 +29,93 @@ class HomeScreen extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                    Container(
-                      width: 300,
-                      padding: const EdgeInsets.only(top: 30, left: 40),
-                      child: TextField(
-                        onChanged: (value) => controller.city = value,
-                        style: const TextStyle(
-                            color: Colors.black54, fontWeight: FontWeight.bold),
-                        textInputAction: TextInputAction.search,
-                        onSubmitted: (value) {
-                          controller.city = value;
-                          controller.updateWeather();
-                        },
-                        decoration: const InputDecoration(
-                          hintStyle: TextStyle(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'flutterfonts.ttf'),
-                          hintText: 'SEARCH',
-                        ),
+                    //  Padding(
+                    //    padding: const EdgeInsets.only(top:30,left:300),
+                    //    child: IconButton(
+                    //                                 splashColor: Colors.green,
+                    //                                   onPressed: () {
+                    //                                     controller.city =
+                    //                                         controller
+                    //                                             .cityLocation;
+                    //                                     print("hello");
+                    //                                     controller
+                    //                                         .updateWeather();
+                    //                                   },
+                    //                                   icon: Icon(
+                    //                                     Icons.location_on,
+                    //                                     color: Colors.blue,
+                    //                                   )),
+                    //  ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40.0),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 150,
+                            height: 100,
+                            padding: const EdgeInsets.only(
+                              top: 30,
+                            ),
+                            child: TextField(
+                              onChanged: (value) => controller.city = value,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                              textInputAction: TextInputAction.search,
+                              onSubmitted: (value) {
+                                controller.city = value;
+                                controller.updateWeather();
+                              },
+                              decoration: const InputDecoration(
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'flutterfonts.ttf'),
+                                hintText: 'SEARCH',
+                                prefixIcon:
+                                    Icon(Icons.search, color: Colors.white),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 70,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                controller.city = controller.cityLocation;
+                                controller.updateWeather();
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Get My',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'flutterfonts.ttf'),
+                                  ),
+                                  IconButton(
+                                      padding: EdgeInsets.zero,
+                                      constraints: BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.location_on,
+                                        color: Colors.orange,
+                                      )),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Align(
@@ -93,19 +161,8 @@ class HomeScreen extends StatelessWidget {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                IconButton(
-                                                    onPressed: () async {
-                                                      var position =
-                                                          await controller
-                                                              .determinePosition();
-                                                      await controller
-                                                          .GetAddressFromLatLon(
-                                                              position);
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.location_on,
-                                                      color: Colors.black45,
-                                                    )),
+                                              
+
                                                 Text(
                                                   (controller.currentWeatherData !=
                                                           null)
@@ -160,6 +217,9 @@ class HomeScreen extends StatelessWidget {
                                                           null)
                                                       ? '${controller.currentWeatherData.weather![0].description}'
                                                       : '',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 2,
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .caption!
@@ -217,16 +277,21 @@ class HomeScreen extends StatelessWidget {
                                                   Container(
                                                     width: 120,
                                                     height: 80,
-                                                    decoration:
-                                                         BoxDecoration(
+                                                    decoration: BoxDecoration(
                                                       image: DecorationImage(
-                                                          image:
-                                                          (controller.currentWeatherData.weather != null) 
-                                                         ? controller.selectImageForWeather(controller.currentWeatherData.weather![0].id!)
-                                                          : AssetImage(
-                                                      'assets/images/normal.png'),
-                                                          fit: BoxFit.contain
-                                                          ),
+                                                          image: (controller
+                                                                      .currentWeatherData
+                                                                      .weather !=
+                                                                  null)
+                                                              ? controller.selectImageForWeather(
+                                                                  controller
+                                                                      .currentWeatherData
+                                                                      .weather![
+                                                                          0]
+                                                                      .icon!)
+                                                              : AssetImage(
+                                                                  'assets/images/default.png'),
+                                                          fit: BoxFit.contain),
                                                     ),
                                                   ),
                                                   Container(
@@ -359,11 +424,15 @@ class HomeScreen extends StatelessWidget {
                                             Container(
                                               width: 50,
                                               height: 50,
-                                              decoration:  BoxDecoration(
+                                              decoration: BoxDecoration(
                                                 image: DecorationImage(
-                                                  image:  (data != null) 
-                                                         ? controller.selectImageForWeather(controller.currentWeatherData.weather![0].id!)
-                                                          : AssetImage('assets/images/normal.png'),
+                                                  image: (data != null)
+                                                      ? controller
+                                                          .selectImageForWeather(
+                                                              data.weather![0]
+                                                                  .icon!)
+                                                      : AssetImage(
+                                                          'assets/images/default.png'),
                                                   fit: BoxFit.contain,
                                                 ),
                                               ),
@@ -372,6 +441,8 @@ class HomeScreen extends StatelessWidget {
                                               (data != null)
                                                   ? "${data.weather![0].description}"
                                                   : '',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .caption!
@@ -379,7 +450,7 @@ class HomeScreen extends StatelessWidget {
                                                       color: Colors.black45,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      fontSize: 12,
+                                                      fontSize: 10,
                                                       fontFamily:
                                                           'flutterfonts'),
                                             ),
@@ -399,14 +470,14 @@ class HomeScreen extends StatelessWidget {
                                 children: <Widget>[
                                   Text(
                                     'forcast next 5 days'.toUpperCase(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black45,
-                                        ),
+                                    style:Theme.of(context)
+                                    .textTheme
+                                    .caption!
+                                    .copyWith(
+                                        color: Colors.black45,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        fontFamily: 'flutterfonts'),
                                   ),
                                   Icon(
                                     Icons.next_plan_outlined,

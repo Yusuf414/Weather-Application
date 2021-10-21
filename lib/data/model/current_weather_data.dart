@@ -19,7 +19,7 @@ class CurrentWeatherData {
   int? timezone = 0;
   int? id = 0;
   String? name = '';
-  int? cod = 0;
+  int? cod;
 
   CurrentWeatherData(
       {this.coord,

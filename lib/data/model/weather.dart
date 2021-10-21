@@ -2,7 +2,7 @@ class Weather {
   int? id = 0;
   String? main = '';
   String? description = '';
-  String? icon = '';
+  String? icon;
   Weather({
     this.id,
     this.main,

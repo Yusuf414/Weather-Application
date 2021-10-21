@@ -30,14 +30,12 @@ class HomeController extends GetxController {
   void initState() {
     getUserCityPosition();
     getCurrentWeatherData();
-    getTopFiveCities();
     getFiveDaysData();
   }
 
   void getUserCityPosition() async {
     position = await determinePosition();
     await GetAddressFromLatLon(position);
-    city = cityLocation;
   }
 
   void getCurrentWeatherData() {
@@ -118,27 +116,51 @@ class HomeController extends GetxController {
         await placemarkFromCoordinates(position.latitude, position.longitude);
     Placemark place = placemark[0];
     cityLocation = place.subAdministrativeArea;
+    city = cityLocation;
+    update();
     updateWeather();
   }
 
-  AssetImage selectImageForWeather(int weatherId) {
+  AssetImage selectImageForWeather(String weatherImageId) {
     AssetImage image;
-    if (weatherId >= 200 && weatherId <= 232) {
-      return image = const AssetImage('assets/images/cloud-bolt.png');
-    } else if (weatherId >= 300 && weatherId < 321) {
-      return image = const AssetImage('assets/images/cloud-drizzle.png');
-    } else if (weatherId >= 500 && weatherId < 531) {
-      return image = const AssetImage('assets/images/cloud-rain.png');
-    } else if (weatherId >= 600 && weatherId <= 622) {
-      return image = const AssetImage('assets/images/cloud-snow.png');
-    } else if (weatherId >= 701 && weatherId < 781) {
-      return image = const AssetImage('assets/images/cloud-fog.png');
-    } else if (weatherId == 800) {
-      return image = const AssetImage('assets/images/sun-max.png');
-    } else if (weatherId > 800 && weatherId <= 804) {
-      return image = const AssetImage('assets/images/normal.png');
-    } else {
-      return image = const AssetImage('assets/images/normal.png');
+    switch (weatherImageId) {
+      case "01d": //clear sky daylight
+        return image = AssetImage('assets/images/01d.png');
+      case "01n": //clear sky night
+        return image = AssetImage('assets/images/01n.png');
+      case "02d":
+        return image = AssetImage('assets/images/02d.png');
+      case "02n":
+        return image = AssetImage('assets/images/02n.png');
+      case "03d":
+        return image = AssetImage('assets/images/03d.png');
+      case "03n":
+        return image = AssetImage('assets/images/03d.png');
+      case "04d":
+        return image = AssetImage('assets/images/03d.png');
+      case "04n":
+        return image = AssetImage('assets/images/03d.png');
+      case "09d":
+        return image = AssetImage('assets/images/09d.png');
+      case "09n":
+        return image = AssetImage('assets/images/09d.png');
+      case "10d":
+        return image = AssetImage('assets/images/10d.png');
+      case "10n":
+        return image = AssetImage('assets/images/10n.png');
+      case "11d":
+        return image = AssetImage('assets/images/11d.png');
+      case "11n":
+        return image = AssetImage('assets/images/11d.png');
+      case "13d":
+        return image = AssetImage('assets/images/13d.png');
+      case "13n":
+        return image = AssetImage('assets/images/13d.png');
+      case "50d":
+        return image = AssetImage('assets/images/50d.png');
+      case "50n":
+        return image = AssetImage('assets/images/50d.png');
     }
+    return image = AssetImage('assets/images/default.png');
   }
 }

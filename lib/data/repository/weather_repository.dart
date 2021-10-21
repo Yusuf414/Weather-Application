@@ -13,7 +13,7 @@ class ApiRepository {
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   }) {
-    _dio.get(this.url, queryParameters: this.payload).then((response) {
+    _dio.get(url, queryParameters: payload).then((response) {
       if (onSuccess != null) {
         onSuccess(response.data);
       }

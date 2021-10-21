@@ -1,6 +1,5 @@
 import 'package:weather_app/data/model/current_weather_data.dart';
 import 'package:weather_app/data/model/five_days_data.dart';
-import 'package:weather_app/data/model/location.dart';
 import 'package:weather_app/data/repository/weather_repository.dart';
 
 class WeatherWebServices {
@@ -26,32 +25,6 @@ class WeatherWebServices {
             },
         onSuccess: (data) => {
               onSuccess!(CurrentWeatherData.fromJson(data)),
-            },
-        onError: (error) => {
-              if (onError != null)
-                {
-                  onError(error),
-                }
-            });
-  }
-
-  void getCurrentLocationWeather({
-    Function()? beforeSend,
-    Function(Location currentWeatherData)? onSuccess,
-    Function(dynamic error)? onError,
-    double? lat,
-    double? lon,
-  }) {
-    final url = '$baseUrl/onecall?lat=$lat&lon=$lon&$apiKey';
-    ApiRepository(url: url, payload: null).getData(
-        beforeSend: () => {
-              if (beforeSend != null)
-                {
-                  beforeSend(),
-                }
-            },
-        onSuccess: (data) => {
-              onSuccess!(Location.fromJson(data)),
             },
         onError: (error) => {
               if (onError != null)
