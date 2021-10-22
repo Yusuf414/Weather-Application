@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:weather_app/data/model/current_weather_data.dart';
 import 'package:weather_app/data/model/five_days_data.dart';
 import 'package:weather_app/data/web_services/weather_web_services.dart';
 
 class HomeController extends GetxController {
-  String? city = 'loading...';
+  String? city;
   HomeController({
     required this.city,
   });
@@ -45,6 +45,13 @@ class HomeController extends GetxController {
           update();
         },
         onError: (error) => {
+              Get.defaultDialog(
+                  title: "Oops!",
+                  titleStyle: TextStyle(color: Colors.white),
+                  middleTextStyle: TextStyle(color: Colors.white),
+                  backgroundColor: Color(0xff3490dc),
+                  middleText: "Something Went Wrong...",
+                  ),
               update(),
             });
   }
@@ -62,7 +69,7 @@ class HomeController extends GetxController {
   }
 
   void getFiveDaysData() {
-    WeatherWebServices(city: '$city').getFiveDaysThreeHoursForcastData(
+    WeatherWebServices(city: city).getFiveDaysThreeHoursForcastData(
         onSuccess: (data) {
       fiveDaysData = data;
       update();
@@ -73,6 +80,7 @@ class HomeController extends GetxController {
 
   void updateWeather() {
     getCurrentWeatherData();
+    getTopFiveCities();
     getFiveDaysData();
   }
 
@@ -139,9 +147,9 @@ class HomeController extends GetxController {
       case "04d":
         return image = AssetImage('assets/images/03d.png');
       case "04n":
-        return image = AssetImage('assets/images/03d.png');
+        return image = AssetImage('assets/images/04d.png');
       case "09d":
-        return image = AssetImage('assets/images/09d.png');
+        return image = AssetImage('assets/images/04d.png');
       case "09n":
         return image = AssetImage('assets/images/09d.png');
       case "10d":
@@ -151,15 +159,15 @@ class HomeController extends GetxController {
       case "11d":
         return image = AssetImage('assets/images/11d.png');
       case "11n":
-        return image = AssetImage('assets/images/11d.png');
+        return image = AssetImage('assets/images/11n.png');
       case "13d":
         return image = AssetImage('assets/images/13d.png');
       case "13n":
-        return image = AssetImage('assets/images/13d.png');
+        return image = AssetImage('assets/images/13n.png');
       case "50d":
         return image = AssetImage('assets/images/50d.png');
       case "50n":
-        return image = AssetImage('assets/images/50d.png');
+        return image = AssetImage('assets/images/50n.png');
     }
     return image = AssetImage('assets/images/default.png');
   }

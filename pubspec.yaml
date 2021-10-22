@@ -27,25 +27,30 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  animated_splash_screen: ^1.1.0
   cupertino_icons: ^1.0.2
   dio: ^4.0.0
   flutter:
     sdk: flutter
-  get: ^4.3.8
-  intl: ^0.17.0
-  syncfusion_flutter_charts: ^19.3.45+1
-  geolocator: ^7.7.0
+  flutter_launcher_icons: ^0.9.2
+  flutter_native_splash: ^1.2.4
+  flutter_svg: ^0.23.0+1
   geocoding: ^2.0.1
+  geolocator: ^7.7.0
+  get: ^4.3.8
+  lottie: ^1.2.1
+  syncfusion_flutter_charts: ^19.3.45+1
 dev_dependencies:
-  
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
+flutter_icons:
+  android: true
+  image_path: "assets/images/app_icon/appicon1.png"
+flutter_native_splash:
+  android: true
+  color: "#ffffff"
+  image: assets/images/app_icon/logo.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -60,6 +65,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/splash_screen/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
