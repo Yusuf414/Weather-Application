@@ -1,4 +1,4 @@
-package com.example.weather_app
+package com.underzero.weather_app.cloudy
 
 import io.flutter.embedding.android.FlutterActivity
 

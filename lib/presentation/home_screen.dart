@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:weather_app/constants.dart';
 import 'package:weather_app/data/model/current_weather_data.dart';
 import 'package:weather_app/data/model/five_days_data.dart';
 import 'package:weather_app/logic/home_logic/home_controller.dart';
+import 'package:weather_app/presentation/privacy%20policy/notice.dart';
 
+// ignore: use_key_in_widget_constructors
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -36,9 +42,25 @@ class HomeScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: 20.0),
                             child: ElevatedButton(
-                              onPressed: () {
-                                controller.city = controller.cityLocation;
-                                controller.updateWeather();
+                              onPressed: () async {
+                                //checking if user accepted privacy policy and access location
+                                //getting the acceptance value from getx storage
+                                // if true get location and fetch weather data
+                                //if false show privacy policy and permission to access location
+
+                                if (GetStorage()
+                                        .read(isPrivacyPolicyinStorage) ==
+                                    true) {
+                                  // ignore: prefer_typing_uninitialized_variables
+                                  var position;
+                                  position =
+                                      await controller.determinePosition();
+                                  controller.getAddressFromLatLon(position);
+                                } else {
+                                  Get.to(
+                                    () => Notice(),
+                                  );
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.white,
@@ -47,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               child: Row(
-                                children: [
+                                children: const [
                                   Icon(
                                     Icons.location_on,
                                     color: Colors.blue,
@@ -56,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 80,
                           ),
                           Container(
@@ -73,10 +95,8 @@ class HomeScreen extends StatelessWidget {
                               textInputAction: TextInputAction.search,
                               onSubmitted: (value) {
                                 controller.city = value;
-                                
+
                                 controller.updateWeather();
-                                
-                
                               },
                               decoration: const InputDecoration(
                                 hintStyle: TextStyle(
@@ -99,7 +119,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0.0, 0.9),
+                      alignment: const Alignment(0.0, 0.9),
                       child: SizedBox(
                         height: 10,
                         width: 10,
@@ -142,6 +162,7 @@ class HomeScreen extends StatelessWidget {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
+                                                  // ignore: unnecessary_null_comparison
                                                   (controller.currentWeatherData !=
                                                           null)
                                                       ? '${controller.city}'
@@ -267,11 +288,12 @@ class HomeScreen extends StatelessWidget {
                                                                       .weather![
                                                                           0]
                                                                       .icon!)
-                                                              : AssetImage(
+                                                              : const AssetImage(
                                                                   'assets/images/default.png'),
                                                           fit: BoxFit.contain),
                                                     ),
                                                   ),
+                                                  // ignore: avoid_unnecessary_containers
                                                   Container(
                                                     child: Text(
                                                       (controller.currentWeatherData
@@ -323,6 +345,7 @@ class HomeScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // ignore: avoid_unnecessary_containers
                             Container(
                               child: Text(
                                 "other cities".toUpperCase(),
@@ -336,27 +359,30 @@ class HomeScreen extends StatelessWidget {
                                         fontFamily: 'flutterfonts'),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 5,
                             ),
+                            // ignore: sized_box_for_whitespace
                             Container(
                               height: 180,
                               child: ListView.separated(
-                                physics: BouncingScrollPhysics(),
+                                physics: const BouncingScrollPhysics(),
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
                                 itemCount: controller.dataList.length,
                                 separatorBuilder:
                                     (BuildContext context, int index) =>
-                                        VerticalDivider(
+                                        const VerticalDivider(
                                   color: Colors.transparent,
                                   width: 5,
                                 ),
                                 itemBuilder: (BuildContext context, int index) {
                                   CurrentWeatherData? data;
+                                  // ignore: prefer_is_empty
                                   (controller.dataList.length > 0)
                                       ? data = controller.dataList[index]
                                       : data = null;
+                                  // ignore: sized_box_for_whitespace
                                   return Container(
                                     width: 150,
                                     height: 150,
@@ -364,6 +390,7 @@ class HomeScreen extends StatelessWidget {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
+                                      // ignore: avoid_unnecessary_containers
                                       child: Container(
                                         child: Column(
                                           mainAxisAlignment:
@@ -409,7 +436,7 @@ class HomeScreen extends StatelessWidget {
                                                           .selectImageForWeather(
                                                               data.weather![0]
                                                                   .icon!)
-                                                      : AssetImage(
+                                                      : const AssetImage(
                                                           'assets/images/default.png'),
                                                   fit: BoxFit.contain,
                                                 ),
@@ -441,7 +468,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.only(top: 5),
+                              padding: const EdgeInsets.only(top: 5),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -457,13 +484,14 @@ class HomeScreen extends StatelessWidget {
                                             fontSize: 16,
                                             fontFamily: 'flutterfonts'),
                                   ),
-                                  Icon(
+                                  const Icon(
                                     Icons.next_plan_outlined,
                                     color: Colors.black45,
                                   ),
                                 ],
                               ),
                             ),
+                            // ignore: sized_box_for_whitespace
                             Container(
                               width: MediaQuery.of(context).size.width,
                               height: 240,

@@ -7,13 +7,13 @@ class ApiRepository {
     required this.url,
     this.payload,
   });
-  Dio _dio = Dio();
+  Dio dio = Dio();
   void getData({
     Function()? beforeSend,
     Function(dynamic data)? onSuccess,
     Function(dynamic error)? onError,
   }) {
-    _dio.get(url, queryParameters: payload).then((response) {
+    dio.get(url, queryParameters: payload).then((response) {
       if (onSuccess != null) {
         onSuccess(response.data);
       }

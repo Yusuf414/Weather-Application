@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:weather_app/data/model/current_weather_data.dart';
 import 'package:weather_app/data/model/five_days_data.dart';
 import 'package:weather_app/data/web_services/weather_web_services.dart';
@@ -11,14 +12,18 @@ class HomeController extends GetxController {
   HomeController({
     required this.city,
   });
-
+  // creating instances to be used
   CurrentWeatherData currentWeatherData = CurrentWeatherData();
   List<CurrentWeatherData> dataList = [];
   List<FiveDayData> fiveDaysData = [];
   double? latitude;
   double? longitude;
   String? cityLocation;
+  // ignore: prefer_typing_uninitialized_variables
   var position;
+  bool isHomeScreen = false;
+
+  // onInit is a special method of getx to initialize these functions at run time such as the onInit of the stateful wideget
   @override
   void onInit() {
     initState();
@@ -28,14 +33,8 @@ class HomeController extends GetxController {
   }
 
   void initState() {
-    getUserCityPosition();
     getCurrentWeatherData();
     getFiveDaysData();
-  }
-
-  void getUserCityPosition() async {
-    position = await determinePosition();
-    await GetAddressFromLatLon(position);
   }
 
   void getCurrentWeatherData() {
@@ -45,19 +44,23 @@ class HomeController extends GetxController {
           update();
         },
         onError: (error) => {
-              Get.defaultDialog(
-                  title: "Oops!",
-                  titleStyle: TextStyle(color: Colors.white),
-                  middleTextStyle: TextStyle(color: Colors.white),
-                  backgroundColor: Color(0xff3490dc),
-                  middleText: "Something Went Wrong...",
+              if (isHomeScreen)
+                {
+                  Get.defaultDialog(
+                    title: "Oops!",
+                    titleStyle: const TextStyle(color: Colors.white),
+                    middleTextStyle: const TextStyle(color: Colors.white),
+                    backgroundColor: const Color(0xff3490dc),
+                    middleText: "Something Went Wrong...",
                   ),
-              update(),
+                  update(),
+                },
             });
   }
 
   void getTopFiveCities() {
     List<String> cities = ['London', 'New York', 'Paris', 'Moscow', 'Tokyo'];
+    // ignore: avoid_function_literals_in_foreach_calls
     cities.forEach((element) {
       WeatherWebServices(city: element).getCurrentweather(onSuccess: (data) {
         dataList.add(data);
@@ -80,10 +83,10 @@ class HomeController extends GetxController {
 
   void updateWeather() {
     getCurrentWeatherData();
-    getTopFiveCities();
     getFiveDaysData();
   }
 
+  // Accessing user location and asking for permission using geocoding and geolocator packages
   Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -116,10 +119,12 @@ class HomeController extends GetxController {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
+    GetStorage().write("Privacy Policy", true);
+
     return await Geolocator.getCurrentPosition();
   }
 
-  Future<void> GetAddressFromLatLon(Position position) async {
+  Future<void> getAddressFromLatLon(Position position) async {
     List<Placemark> placemark =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     Placemark place = placemark[0];
@@ -129,46 +134,53 @@ class HomeController extends GetxController {
     updateWeather();
   }
 
+  void getUserCityPosition() async {
+    position = await determinePosition();
+    await getAddressFromLatLon(position);
+  }
+
+// a switch implementation to fetch the right photo with the weather state data comes from api
   AssetImage selectImageForWeather(String weatherImageId) {
+    // ignore: unused_local_variable
     AssetImage image;
     switch (weatherImageId) {
       case "01d": //clear sky daylight
-        return image = AssetImage('assets/images/01d.png');
+        return image = const AssetImage('assets/images/01d.png');
       case "01n": //clear sky night
-        return image = AssetImage('assets/images/01n.png');
+        return image = const AssetImage('assets/images/01n.png');
       case "02d":
-        return image = AssetImage('assets/images/02d.png');
+        return image = const AssetImage('assets/images/02d.png');
       case "02n":
-        return image = AssetImage('assets/images/02n.png');
+        return image = const AssetImage('assets/images/02n.png');
       case "03d":
-        return image = AssetImage('assets/images/03d.png');
+        return image = const AssetImage('assets/images/03d.png');
       case "03n":
-        return image = AssetImage('assets/images/03d.png');
+        return image = const AssetImage('assets/images/03d.png');
       case "04d":
-        return image = AssetImage('assets/images/03d.png');
+        return image = const AssetImage('assets/images/03d.png');
       case "04n":
-        return image = AssetImage('assets/images/04d.png');
+        return image = const AssetImage('assets/images/04d.png');
       case "09d":
-        return image = AssetImage('assets/images/04d.png');
+        return image = const AssetImage('assets/images/04d.png');
       case "09n":
-        return image = AssetImage('assets/images/09d.png');
+        return image = const AssetImage('assets/images/09d.png');
       case "10d":
-        return image = AssetImage('assets/images/10d.png');
+        return image = const AssetImage('assets/images/10d.png');
       case "10n":
-        return image = AssetImage('assets/images/10n.png');
+        return image = const AssetImage('assets/images/10n.png');
       case "11d":
-        return image = AssetImage('assets/images/11d.png');
+        return image = const AssetImage('assets/images/11d.png');
       case "11n":
-        return image = AssetImage('assets/images/11n.png');
+        return image = const AssetImage('assets/images/11n.png');
       case "13d":
-        return image = AssetImage('assets/images/13d.png');
+        return image = const AssetImage('assets/images/13d.png');
       case "13n":
-        return image = AssetImage('assets/images/13n.png');
+        return image = const AssetImage('assets/images/13n.png');
       case "50d":
-        return image = AssetImage('assets/images/50d.png');
+        return image = const AssetImage('assets/images/50d.png');
       case "50n":
-        return image = AssetImage('assets/images/50n.png');
+        return image = const AssetImage('assets/images/50n.png');
     }
-    return image = AssetImage('assets/images/default.png');
+    return image = const AssetImage('assets/images/default.png');
   }
 }
