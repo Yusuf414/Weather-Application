@@ -6,7 +6,7 @@ class WeatherWebServices {
   String? city = 'london';
 
   String baseUrl = 'https://api.openweathermap.org/data/2.5';
-  String apiKey = 'appid=5d57a4f248641b52b0cc09e606db8162';
+  String apiKey = 'appid=YOUR_API_KEY';
   WeatherWebServices({
      this.city,
   });
