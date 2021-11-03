@@ -1,8 +1,11 @@
-# Play Store:
+# Available on Google Play:
 
-- https://play.google.com/store/apps/details?id=com.underzero.weather_app.cloudy
+[<img src="https://user-images.githubusercontent.com/69325037/140028271-cb71c8ac-65fb-40d3-bda1-e1e1e382f4a1.png" width="300"/>](https://play.google.com/store/apps/details?id=com.underzero.weather_app.cloudy)
 
-## Properities:
+
+## About the project
+The purpose of this project is to get the weather temperature in Celsius degree to your current location or to search for a certain city. In addition to getting the weather forecast for the next 5 days which is shown in chart graph. Finally you can follow the weather of top 5 cities around the world.
+## Features:
 
 - Openweather API.
 - GetX state management.
