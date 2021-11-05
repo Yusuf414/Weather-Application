@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:weather_app/constants.dart';
 import 'package:weather_app/logic/home_logic/home_controller.dart';
 
 
@@ -9,9 +10,12 @@ class PrivacyPolicy extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Privacy Policy"),
+        title: const Text("Privacy Policy",),
         centerTitle: true,
+        elevation: 0.0,
+        backgroundColor: kBlueColor
       ),
+      backgroundColor: kBlueColor,
       body: GetBuilder<HomeController>(
         builder: (controller) => Padding(
           padding: const EdgeInsets.all(10.0),
@@ -65,10 +69,13 @@ Email: yusufamr414@gmail.com
                   ''',
              
                   style: Theme.of(context).textTheme.caption!.copyWith(
-                        // color: Colors.black45,
+                        color: Colors.white,
                         fontSize: 16,
                         fontFamily: 'flutterfonts',
+
                       ),
+                                            textAlign: TextAlign.center,
+
                 ),
 
                

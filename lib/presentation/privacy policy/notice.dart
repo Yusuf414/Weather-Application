@@ -14,59 +14,103 @@ class Notice extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Notice"),
+        title: const Text("Notice",style: TextStyle(color: Colors.white),),
         centerTitle: true,
+        elevation: 0.0,
+        backgroundColor: kBlueColor,
       ),
+      backgroundColor: kBlueColor,
+      
       body: GetBuilder<HomeController>(
         builder: (controller) => SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(45.0),
             child: Column(
+
               children: [
+
                 Text(
                   "Cloudy App collects location data to enable getting weather forecast of your current location even when the app is closed or not in use.",
                   style: Theme.of(context).textTheme.caption!.copyWith(
-                        // color: Colors.black45,
-                        fontSize: 22,
+                        color: Colors.white,
+                        fontSize: 18,
                         fontFamily: 'flutterfonts',
                       ),
+                      textAlign: TextAlign.center,
                 ),
                 const SizedBox(
                   height: 30,
                 ),
                 Center(
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Get.to(() => PrivacyPolicy());
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            'click here\n to read \nour privacy policy',
-                            style: TextStyle(fontSize: 18),
-                            textAlign: TextAlign.center,
+                  child: GestureDetector(
+                    onTap: (){
+                                                Get.to(() => PrivacyPolicy());
+
+                    },
+                    child: 
+                    Text(
+                            'click for privacy policy',
+                            
+                            style: TextStyle(fontSize: 14,color: Colors.white,
+                            decoration: TextDecoration.combine([
+                              TextDecoration.underline
+                              ]
+                            ),
+                            ),
                           ),
-                        ))),
+                  ),
+                    // child: ElevatedButton(
+                    //     onPressed: () {
+                    //       Get.to(() => PrivacyPolicy());
+                    //     },
+                    //        style: ElevatedButton.styleFrom(
+                    //         primary: Colors.white,
+                    //         elevation: 0.0
+                    //       ),
+                    //     child: const Padding(
+                    //       padding: EdgeInsets.all(10.0),
+                    //       child: Text(
+                    //         'click for privacy policy',
+                    //         style: TextStyle(fontSize: 14,color: kBlueColor),
+                    //         textAlign: TextAlign.center,
+                    //       ),
+                    //     ),),
+                        ),
                 const Spacer(),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                        onPressed: () {
-                         GetStorage().write(isPrivacyPolicyinStorage, false);
+                    // ignore: sized_box_for_whitespace
+                    Container(
+                      width: 110,
+                      child: ElevatedButton(
+                          onPressed: () {
+                           GetStorage().write(isPrivacyPolicyinStorage, false);
 
-                          Get.off(() => HomeScreen());
-                        },
-                        child: const Text("Deny")),
-                    ElevatedButton(
-                        onPressed: () {
-                          GetStorage().write(isPrivacyPolicyinStorage, false);
+                            Get.off(() => HomeScreen());
+                          },
+                           style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                          ),
+                          child: const Text("Deny",style: TextStyle(color: kBlueColor))),
+                    ),
+                    const SizedBox(width: 10,),
+                    // ignore: sized_box_for_whitespace
+                    Container(
+                      width: 110,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            GetStorage().write(isPrivacyPolicyinStorage, false);
 
-                          controller.getUserCityPosition();
+                            controller.getUserCityPosition();
 
-                          Get.off(() => HomeScreen());
-                        },
-                        child: const Text("Accept")),
+                            Get.off(() => HomeScreen());
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                          ),
+                          child: const Text("Accept",style: TextStyle(color: kBlueColor),)),
+                    ),
                   ],
                 ),
               ],

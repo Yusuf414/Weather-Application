@@ -224,7 +224,7 @@ class HomeScreen extends StatelessWidget {
                                                       .caption!
                                                       .copyWith(
                                                           color: Colors.black45,
-                                                          fontSize: 16,
+                                                          fontSize: 14,
                                                           fontFamily:
                                                               'flutterfonts'),
                                                 ),
@@ -241,7 +241,7 @@ class HomeScreen extends StatelessWidget {
                                                           color: Colors.black45,
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 24,
+                                                          fontSize: 18,
                                                           fontFamily:
                                                               'flutterfonts'),
                                                 ),
@@ -422,7 +422,7 @@ class HomeScreen extends StatelessWidget {
                                                       color: Colors.black45,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      fontSize: 18,
+                                                      fontSize: 14,
                                                       fontFamily:
                                                           'flutterfonts'),
                                             ),
